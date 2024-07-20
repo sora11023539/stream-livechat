@@ -1,5 +1,3 @@
-import "react-native-gesture-handler"
-
 import { Slot, Stack, useRouter, useSegments } from "expo-router"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { AuthProvider, useAuth } from "@/context/AuthContext"
@@ -22,8 +20,12 @@ const InitialLayout = () => {
     const isAuthGroup = segments[0] === "(inside)"
 
     if (authState?.authenticated && !isAuthGroup) {
+      console.log("authenticated and not in auth group");
+
       router.replace("/(inside)")
     } else if (!authState?.authenticated && isAuthGroup) {
+      console.log("not authenticated and in auth group");
+
       client?.disconnectUser()
       router.replace("/")
     }
