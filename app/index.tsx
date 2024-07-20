@@ -6,11 +6,13 @@ import {
   TextInput,
   TouchableOpacity,
   Button,
-  Dimensions
+  Dimensions,
+  Alert
 } from 'react-native'
 import React, { useState } from 'react'
 import Spinner from 'react-native-loading-spinner-overlay'
 import Colors from '@/constants/Colors'
+import { useAuth } from '@/context/AuthContext'
 
 const WIDTH = Dimensions.get('window').width
 const HEIGHT = Dimensions.get('window').height
@@ -19,11 +21,30 @@ const Page = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const { onLogin, onRegister } = useAuth()
 
   const onSignInPress = async () => {
+    setLoading(true)
+    try {
+      const result = await onLogin!(email, password)
+      console.log('result:', result);
+    } catch (error) {
+      Alert.alert('Error', "Could not login")
+    } finally {
+      setLoading(false)
+    }
   }
 
   const onSignUpPress = async () => {
+    setLoading(true)
+    try {
+      const result = await onRegister!(email, password)
+      console.log('result:', result);
+    } catch (error) {
+      Alert.alert('Error', "Could not register")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
